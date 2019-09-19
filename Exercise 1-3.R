@@ -51,4 +51,3 @@ studygroup_onesib <- subset(studygroup,sib_real == 1, select = c("Names","Gender
 #Defining a new df with their name and gender as a subset of studygroup
 #with everyone where the guess is equal to the actual amount (i.e. sib_off == 0)
 studygroup_correct <- subset(studygroup,sib_off == 0, select =c("Names","Gender"))
-

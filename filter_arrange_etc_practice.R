@@ -1,9 +1,6 @@
 #defining a dataframe with the data from the test
 df <- read.table("NEW_CogSciPersonalityTest2019.csv",header = TRUE,sep = ",")
 
-#removing the useless "X"-coloumn
-df$X <- NULL
-
 #loading the necessary libraries
 library(dplyr)
 library(pacman)
@@ -46,3 +43,25 @@ sel_df_vars <- select(df,vars)
 
 #selecting the dataframe with gender and shoesize first
 sel_df_every <- select(df,gender,shoesize,everything(df))
+
+#defining a new coloumn to the existing df using existing coloumns with mutate
+df <- mutate(df,words_per_sec = 99 / tongue_twist)
+
+#defining a new coloumn with the rounded down number of number of minutes
+df <- mutate(df,breath_min = breath_hold %/% 60)
+
+#defining a new coloumn with the remainder of breath hold in sec
+df <- mutate(df,breath_sec = breath_hold %% 60)
+
+#Defining new object as mean_wps and creating new coloumn as difference between mean
+mean_wps <- mean(df$words_per_sec)
+df <- mutate(df, diff_avrg_wps = df$words_per_sec - mean_wps)
+
+#using pipes and summarise to create a new df with only gender and mean of b_b
+gender_balloon <- df %>% group_by(gender) %>% summarise(mean(balloon_balance))
+
+#using pipes and summarise to create a new df with only cola_pref and mean of sound_level
+cola_sound <- df %>% group_by(taste_cola) %>% summarise(mean(sound_level_pref))
+
+#using n() to count incidents of certain handedness in a summarise function
+hand_tongue <- df %>% group_by(handedness) %>% summarise(mean(tongue_twist),n())
